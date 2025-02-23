@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="moviedmsproject:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/moviedmsproject_jar</output-path>
+    <root id="archive" name="moviedmsproject.jar">
+      <element id="module-output" name="moviedmsproject" />
+    </root>
+  </artifact>
+</component>
