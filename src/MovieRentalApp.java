@@ -1,27 +1,26 @@
+import java.util.List;
 import java.util.Scanner;
 
 public class MovieRentalApp {
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
         MovieRentalSystem system = new MovieRentalSystem();
+        Scanner scanner = new Scanner(System.in);
+        boolean running = true;
 
-        while (true) {
-            System.out.println("\nMovie Rental System Menu:");
-            System.out.println("1. Load Movies from File");
-            System.out.println("2. Display Movies");
-            System.out.println("3. Add Movie");
-            System.out.println("4. Update Movie");
-            System.out.println("5. Remove Movie");
-            System.out.println("6. Calculate Total Rental Cost");
-            System.out.println("7. Exit");
-            System.out.print("Choose an option: ");
+        while (running) {
+            System.out.println("\nMenu:");
+            System.out.println("1. Load movies from file");
+            System.out.println("2. Add new movie");
+            System.out.println("3. List all movies");
+            System.out.println("4. Calculate total rental cost");
+            System.out.println("5. Exit");
+            System.out.print("Enter your choice: ");
 
-            int choice = scanner.nextInt();
-            scanner.nextLine(); // Consume newline
+            String choice = scanner.nextLine();
 
             switch (choice) {
-                case 1:
-                    System.out.print("Enter filename: ");
+                case "1":
+                    System.out.print("Enter file name (e.g., movies.txt): ");
                     String filename = scanner.nextLine();
                     if (system.loadMoviesFromFile(filename)) {
                         System.out.println("Movies loaded successfully.");
@@ -29,64 +28,49 @@ public class MovieRentalApp {
                         System.out.println("Failed to load movies.");
                     }
                     break;
-                case 2:
-                    system.displayMovies();
-                    break;
-                case 3:
-                    System.out.print("Enter title: ");
-                    String title = scanner.nextLine();
-                    System.out.print("Enter genre: ");
-                    String genre = scanner.nextLine();
-                    System.out.print("Enter release year: ");
-                    int year = scanner.nextInt();
-                    System.out.print("Is it available? (yes/no): ");
-                    boolean available = scanner.next().equalsIgnoreCase("yes");
-                    System.out.print("Enter rating (0-5): ");
-                    int rating = scanner.nextInt();
-                    if (system.addMovie(title, genre, year, available, rating)) {
+                case "2":
+                    try {
+                        System.out.print("Enter movie title: ");
+                        String title = scanner.nextLine();
+                        System.out.print("Enter genre: ");
+                        String genre = scanner.nextLine();
+                        System.out.print("Enter price: ");
+                        double price = Double.parseDouble(scanner.nextLine());
+                        System.out.print("Is rented? (yes/no): ");
+                        boolean rented = scanner.nextLine().equalsIgnoreCase("yes");
+                        System.out.print("Enter rating (1-5): ");
+                        int rating = Integer.parseInt(scanner.nextLine());
+
+
+                        system.addMovie(title, genre, price, rented, rating);
                         System.out.println("Movie added successfully.");
-                    } else {
-                        System.out.println("Invalid rating. Movie not added.");
+                    } catch (Exception e) {
+                        System.out.println("Invalid input. Please try again.");
                     }
                     break;
-                case 4:
-                    System.out.print("Enter movie title to update: ");
-                    title = scanner.nextLine();
-                    System.out.print("Enter new genre: ");
-                    genre = scanner.nextLine();
-                    System.out.print("Enter new release year: ");
-                    year = scanner.nextInt();
-                    System.out.print("Is it available? (yes/no): ");
-                    available = scanner.next().equalsIgnoreCase("yes");
-                    System.out.print("Enter new rating (0-5): ");
-                    rating = scanner.nextInt();
-                    if (system.updateMovie(title, genre, year, available, rating)) {
-                        System.out.println("Movie updated successfully.");
+                case "3":
+
+                    List<String> moviesList = system.listMovies();
+                    if (moviesList.isEmpty()) {
+                        System.out.println("No movies available.");
                     } else {
-                        System.out.println("Movie not found.");
+                        for (String movie : moviesList) {
+                            System.out.println(movie);
+                        }
                     }
                     break;
-                case 5:
-                    System.out.print("Enter movie title to remove: ");
-                    title = scanner.nextLine();
-                    if (system.removeMovie(title)) {
-                        System.out.println("Movie removed.");
-                    } else {
-                        System.out.println("Movie not found.");
-                    }
+                case "4":
+                    double total = system.calculateTotalRentalCost();
+                    System.out.printf("Total rental cost: $%.2f\n", total);
                     break;
-                case 6:
-                    System.out.print("Enter number of days rented: ");
-                    int days = scanner.nextInt();
-                    double totalCost = system.calculateTotalRental(days);
-                    System.out.println("Total rental cost: $" + totalCost);
+                case "5":
+                    running = false;
+                    System.out.println("Goodbye!");
                     break;
-                case 7:
-                    System.out.println("Exiting program...");
-                    return;
                 default:
-                    System.out.println("Invalid option. Try again.");
+                    System.out.println("Invalid choice. Please try again.");
             }
         }
+        scanner.close();
     }
 }

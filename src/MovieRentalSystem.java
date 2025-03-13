@@ -1,27 +1,13 @@
 import java.io.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MovieRentalSystem {
-    private List<Movie> movies; // Stores all movies in the system
+    private List<Movie> movies = new ArrayList<>();
 
-    // Constructor
-    public MovieRentalSystem() {
-        this.movies = new ArrayList<>();
-    }
-
-    //  ADD MOVIE
-    public boolean addMovie(String title, String genre, int releaseYear, boolean available, int rating) {
-        if (rating < 0 || rating > 5) {
-            System.out.println("Error: Rating must be between 0 and 5.");
-            return false;
-        }
-        Movie newMovie = new Movie(title, genre, releaseYear, available, rating);
-        movies.add(newMovie);
-        return true;
-    }
-
-    //  READ MOVIES FROM FILE
+    // Load movies from file
     public boolean loadMoviesFromFile(String filename) {
+        movies.clear(); // clear previous data
         try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
             String line;
             while ((line = br.readLine()) != null) {
@@ -29,11 +15,10 @@ public class MovieRentalSystem {
                 if (data.length == 5) {
                     String title = data[0].trim();
                     String genre = data[1].trim();
-                    int releaseYear = Integer.parseInt(data[2].trim());
-                    boolean available = data[3].trim().equalsIgnoreCase("yes");
+                    double price = Double.parseDouble(data[2].trim());
+                    boolean rented = data[3].trim().equalsIgnoreCase("yes");
                     int rating = Integer.parseInt(data[4].trim());
-
-                    addMovie(title, genre, releaseYear, available, rating);
+                    movies.add(new Movie(title, genre, price, rented, rating));
                 }
             }
             return true;
@@ -43,55 +28,29 @@ public class MovieRentalSystem {
         }
     }
 
-    //  DISPLAY MOVIES
-    public List<Movie> getMovies() {
-        return new ArrayList<>(movies); // Return a copy to prevent modification
+    // Add movie to list
+    public void addMovie(String title, String genre, double price, boolean rented, int rating) {
+        movies.add(new Movie(title, genre, price, rented, rating));
     }
 
-    public void displayMovies() {
-        if (movies.isEmpty()) {
-            System.out.println("No movies available.");
-            return;
-        }
-        System.out.println("List of Movies:");
+    // List movies
+    public List<String> listMovies() {
+        List<String> list = new ArrayList<>();
         for (Movie movie : movies) {
-            System.out.println(movie); // Assumes Movie class has a proper toString()
+            list.add(movie.toString());
         }
+        return list;
     }
 
-    //  UPDATE MOVIE DETAILS
-    public boolean updateMovie(String title, String newGenre, int newYear, boolean newAvailable, int newRating) {
+    // Calculate total rental cost
+    public double calculateTotalRentalCost() {
+        double total = 0;
         for (Movie movie : movies) {
-            if (movie.getTitle().equalsIgnoreCase(title)) {
-                movie.setGenre(newGenre);
-                movie.setReleaseYear(newYear);
-                movie.setAvailable(newAvailable);
-                movie.setRating(newRating);
-                return true;
+            if (movie.isRented()) {
+                total += movie.getPrice();
             }
         }
-        return false;
-    }
-
-    // REMOVE MOVIE
-    public boolean removeMovie(String title) {
-        Iterator<Movie> iterator = movies.iterator();
-        while (iterator.hasNext()) {
-            Movie movie = iterator.next();
-            if (movie.getTitle().equalsIgnoreCase(title)) {
-                iterator.remove();
-                return true;
-            }
-        }
-        return false;
-    }
-
-    //  CALCULATE TOTAL RENTAL COST
-    public double calculateTotalRental(int daysRented) {
-        if (daysRented <= 0) {
-            System.out.println("Error: Days rented must be greater than 0.");
-            return 0;
-        }
-        return movies.size() * daysRented * 2.5; // Assuming $2.5 per movie per day
+        return total;
     }
 }
+

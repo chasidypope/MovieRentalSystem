@@ -1,40 +1,46 @@
 public class Movie {
     private String title;
     private String genre;
-    private int releaseYear;
-    private boolean available;
+    private double price;
+    private boolean rented;
     private int rating;
 
-    public Movie(String title, String genre, int releaseYear, boolean available, int rating) {
+    public Movie(String title, String genre, double price, boolean rented, int rating) {
         this.title = title;
         this.genre = genre;
-        this.releaseYear = releaseYear;
-        this.available = available;
+        this.price = price;
+        this.rented = rented;
         this.rating = rating;
     }
 
+    // Getters
     public String getTitle() {
         return title;
     }
 
-    public void setGenre(String genre) {
-        this.genre = genre;
+    public String getGenre() {
+        return genre;
     }
 
-    public void setReleaseYear(int releaseYear) {
-        this.releaseYear = releaseYear;
+    public double getPrice() {
+        return price;
     }
 
-    public void setAvailable(boolean available) {
-        this.available = available;
+    public boolean isRented() {
+        return rented;
     }
 
-    public void setRating(int rating) {
-        this.rating = rating;
+    public int getRating() {
+        return rating;
+    }
+
+    // Convert to CSV
+    public String toCSV() {
+        return title + "," + genre + "," + price + "," + (rented ? "yes" : "no") + "," + rating;
     }
 
     @Override
     public String toString() {
-        return title + " (" + releaseYear + ") - " + genre + " - Rating: " + rating + " - Available: " + (available ? "Yes" : "No");
+        return "Title: " + title + ", Genre: " + genre + ", Price: $" + price + ", Rented: " + (rented ? "yes" : "no") + ", Rating: " + rating;
     }
 }
