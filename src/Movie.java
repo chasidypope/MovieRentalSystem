@@ -14,33 +14,18 @@ public class Movie {
     }
 
     // Getters
-    public String getTitle() {
-        return title;
-    }
+    public String getTitle() { return title; }
+    public String getGenre() { return genre; }
+    public double getPrice() { return price; }
+    public boolean isRented() { return rented; }
+    public int getRating() { return rating; }
 
-    public String getGenre() {
-        return genre;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public boolean isRented() {
-        return rented;
-    }
-
-    public int getRating() {
-        return rating;
-    }
-
-    // Convert to CSV
-    public String toCSV() {
-        return title + "," + genre + "," + price + "," + (rented ? "yes" : "no") + "," + rating;
-    }
+    // Setters
+    public void setRented(boolean rented) { this.rented = rented; }
 
     @Override
     public String toString() {
-        return "Title: " + title + ", Genre: " + genre + ", Price: $" + price + ", Rented: " + (rented ? "yes" : "no") + ", Rating: " + rating;
+        return title + " (" + genre + ") - $" + price + " - " +
+                (rented ? "Rented" : "Available") + " - Rating: " + rating + "/5";
     }
 }

@@ -17,4 +17,4 @@ The Lord of the Rings, Fantasy, 4.50, yes, 5
 Frozen, Animation, 2.75, no, 3
 Spider-Man: No Way Home, Superhero, 4.80, yes, 4
 The Wolf of Wall Street, Biography, 3.60, no, 4
-Black Panther, Superhero, 4.00, yes, 3
+Black Panther, Superhero, 4.00, yes, 3                                                                          

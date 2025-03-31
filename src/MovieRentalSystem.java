@@ -3,11 +3,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MovieRentalSystem {
-    private List<Movie> movies = new ArrayList<>();
+    private final List<Movie> movies = new ArrayList<>();
 
-    // Load movies from file
     public boolean loadMoviesFromFile(String filename) {
-        movies.clear(); // clear previous data
+        movies.clear();
         try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
             String line;
             while ((line = br.readLine()) != null) {
@@ -28,21 +27,18 @@ public class MovieRentalSystem {
         }
     }
 
-    // Add movie to list
     public void addMovie(String title, String genre, double price, boolean rented, int rating) {
         movies.add(new Movie(title, genre, price, rented, rating));
     }
 
-    // List movies
     public List<String> listMovies() {
-        List<String> list = new ArrayList<>();
+        List<String> movieList = new ArrayList<>();
         for (Movie movie : movies) {
-            list.add(movie.toString());
+            movieList.add(movie.toString());
         }
-        return list;
+        return movieList;
     }
 
-    // Calculate total rental cost
     public double calculateTotalRentalCost() {
         double total = 0;
         for (Movie movie : movies) {
@@ -52,5 +48,8 @@ public class MovieRentalSystem {
         }
         return total;
     }
-}
 
+    public List<Movie> getAllMovies() {
+        return movies;
+    }
+}
